@@ -1,0 +1,5 @@
+(1) 전역 상태관리를 활용한 관심사 분리의 사례
+
+const [isLogin, setIsLogin] = useState(false)
+
+isLogin을 전역으로 관리 함으로서 Header, ConstructPage, LoginPage 컴포넌트 에서 UI관련 코드만 작성 할 수 있음.
