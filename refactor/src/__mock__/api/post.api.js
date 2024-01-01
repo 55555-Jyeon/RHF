@@ -4,7 +4,6 @@ import {
   definePostDetail,
   definePostList,
 } from "../data/post.data";
-import handlePage from "../../util/handle-page";
 
 export const getPostList = rest.get("/api/posts", async (req, res, ctx) => {
   const page = req.url.searchParams.get("page");
@@ -12,12 +11,25 @@ export const getPostList = rest.get("/api/posts", async (req, res, ctx) => {
   const take = req.url.searchParams.get("take");
   const count = 486;
 
-  const PageNation = handlePage(page, limit, take, count);
+  const totalPage = Math.ceil(count / parseInt(take));
+  let startPage = Math.floor((page - 1) / limit) * limit + 1;
+  let endPage = parseInt(startPage) + parseInt(limit) - 1;
 
+  if (endPage >= totalPage) endPage = totalPage;
+  if (startPage > endPage && endPage < totalPage) {
+    startPage = endPage;
+    endPage = startPage + limit - 1;
+  }
   return res(
     ctx.status(200),
     ctx.json({
-      PageNation,
+      PageNation: {
+        totalCount: count,
+        totalPage,
+        currentPage: parseInt(page),
+        startPage,
+        endPage,
+      },
       Posts: definePostList(parseInt(take)),
     })
   );
@@ -35,13 +47,29 @@ export const getCommentList = rest.get(
     const take = req.url.searchParams.get("take");
     const count = 311;
 
-    const PageNation = handlePage(page, limit, take, count);
+    console.log(take);
+
+    const totalPage = Math.ceil(count / parseInt(take));
+    let startPage = Math.floor((page - 1) / limit) * limit + 1;
+    let endPage = parseInt(startPage) + parseInt(limit) - 1;
+
+    if (endPage >= totalPage) endPage = totalPage;
+    if (startPage > endPage && endPage < totalPage) {
+      startPage = endPage;
+      endPage = startPage + limit - 1;
+    }
 
     return res(
       ctx.status(200),
       ctx.json({
-        PageNation,
-        Posts: definePostList(parseInt(take)),
+        PageNation: {
+          totalCount: count,
+          totalPage,
+          currentPage: parseInt(page),
+          startPage,
+          endPage,
+        },
+        Comments: definePostComment(parseInt(take)),
       })
     );
   }
