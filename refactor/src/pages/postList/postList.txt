@@ -1,0 +1,7 @@
+- http 요청 함수 분리
+
+- diaLog 로직과 post.map() 로직을 분리하여 가독성 신경씀
+
+- components/pagination 에서 같은 api 요청을 반복하고 있어서 로직 합침
+
+

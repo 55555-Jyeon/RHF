@@ -1,12 +1,9 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
-import PostDetailPage from "./pages/Post.detail";
-import "./app.css";
-import HomePage from "./pages/Home";
-
 import { worker } from "./__mock__/browser";
 import DiaLogProvider from "./contexts/DiaLogProvider";
-import PostListPage from "./pages/Post.List";
+import HomePage from "./pages/home/home";
+import PostListPage from "./pages/postList/post.ListPage";
+import PostDetailPage from "./pages/postDetail/Post.Detail";
 
 function App() {
   const router = createBrowserRouter([

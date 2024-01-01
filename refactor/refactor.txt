@@ -1,0 +1,48 @@
+
+### 관리할 포인트를 줄이자
+좀 더 재사용하기 용이한 효율적인 코드를 위해서...
+
+
+- api 폴더 안에 http 요청하는 함수 모아두기
+
+- dialog provider 안에 많이 있는 상태들 >> useReducer 
+
+- pagination DI 
+
+- weather.config >> .env
+
+
+pagenation
+dialog
+나머지는 components, DI
+axios 수정
+weather config 수정
+가장 중요한 점은 관심사 분리
+즉 관리할 포인트를 줄이자
+api post,coments 등등 api  관리
+usereducer 등도 사용가능
+reducer는 정말 복잡한 스테이트들의 변화를 쉽게 사용하기 위함
+이것도 또하나의 스테이트
+
+
+
+const LIMIT_PAGE = 10;
+const LIMIT_TAKE = 20;
+
+consts 폴더에 
+const LIMIT_PAGE = 10;
+const LIMIT_TAKE = 20;
+
+- Pagination.Comment.jsx 계획
+    - http 요청 로직 분리
+    - LIMIT_PAGE, LIMIT_TAKE consts 폴더에 빼서 관리하기
+    - 페이지네이션 버튼 컴포넌트 만들어서 활용하기
+    
+
+한 것.
+1. Pagination.Comment.jsx
+    fetchCommentPageNation함수에 있는 http 요청 로직을
+    api폴더에 따라 빼서 관리할 수 있게 만듬.
+
+2. api     
+
