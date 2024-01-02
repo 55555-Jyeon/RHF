@@ -1,31 +1,44 @@
-import React from "react";
-import { DialLogState } from "../contexts/DiaLogProvider";
+import React, { useEffect } from "react";
+import { useDiaLogStore } from "../contexts/DiaLogProvider";
+import { DialogConfig } from "../consts/dialog.config";
 import { styled } from "styled-components";
 
-const Dialog = React.forwardRef(
-  ({ type, text, onConfirm, onCancel, onClose, position }, ref) => {
-    return (
-      <S.Wrapper ref={ref} $position={position}>
-        <button onClick={onClose}>x</button>
-        {text}
-        <S.Button onClick={onConfirm}>확인</S.Button>
-        {type === DialLogState.CONFIRM && (
-          <S.Button onClick={onCancel}>취소</S.Button>
-        )}
-      </S.Wrapper>
-    );
-  }
-);
-// Debugging...
-Dialog.displayName = "dialog";
+const Dialog = React.forwardRef(({ type, text, isOpen, endPoint }, ref) => {
+  const { onCloseDiaLog } = useDiaLogStore();
+
+  useEffect(() => {
+    if (isOpen) return ref.current.showModal();
+    ref.current.close();
+  }, [isOpen]);
+
+  const onMovePage = () => {
+    onCloseDiaLog();
+    window.location.href = endPoint;
+  };
+
+  const onMovePageCancel = () => {
+    onCloseDiaLog();
+  };
+
+  return (
+    <S.Wrapper ref={ref}>
+      <button onClick={onCloseDiaLog}>x</button>
+      {text}
+      <S.Button onClick={onMovePage}>확인</S.Button>
+      {type === DialogConfig.CONFIRM && (
+        <S.Button onClick={onMovePageCancel}>취소</S.Button>
+      )}
+    </S.Wrapper>
+  );
+});
 
 export default Dialog;
 
 const Wrapper = styled.dialog`
   width: 400px;
   position: absolute;
-  left: ${({ $position }) => $position.x}%;
-  top: ${({ $position }) => $position.y}%;
+  left: 50%;
+  top: 10%;
   transform: translate(-50%, -50%);
   border-radius: 8px;
   border: 1px solid #888;

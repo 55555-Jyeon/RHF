@@ -1,19 +1,17 @@
-import { DialLogState, useDiaLogStore } from "../../contexts/DiaLogProvider";
+import { DialogConfig } from "../../consts/dialog.config";
+import { useDiaLogStore } from "../../contexts/DiaLogProvider";
 import UserName from "./components/username";
 import Weather from "./components/weather";
 
 const HomePage = () => {
-  const [, setDiaLogAttribute] = useDiaLogStore();
+  const { setKeepPrevDialogAttribute } = useDiaLogStore();
 
   const onPressNavigateBlog = () => {
-    setDiaLogAttribute({
-      type: DialLogState.ALERT,
-      text: "정말로 페이지를 이동하겠습니까",
+    setKeepPrevDialogAttribute({
+      type: DialogConfig.ALERT,
+      text: "정말로 페이지를 이동하겠습니까?",
       isOpen: true,
-      onConfirm: async () => {
-        await setDiaLogAttribute({ isOpen: false });
-        window.location.href = "/posts";
-      },
+      endPoint: "/posts",
     });
   };
 

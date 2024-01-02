@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import PaginationConfig from "../../../consts/pagenation.config";
+import { PaginationConfig } from "../../../consts/pagenation.config";
 import PagenationBtn from "../../../components/pagenation/pagenation.button";
 import OneComment from "./oneComment";
 import { getCommentData } from "../../../apis/post";
