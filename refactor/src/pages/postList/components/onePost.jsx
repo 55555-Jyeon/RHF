@@ -1,24 +1,15 @@
-import { DialLogState, useDiaLogStore } from "../../../contexts/DiaLogProvider";
+import { DialogConfig } from "../../../consts/dialog.config";
+import { useDiaLogStore } from "../../../contexts/DiaLogProvider";
 
 const OnePost = ({ title, content, nickName, id }) => {
-  const [, setDiaLogAttribute] = useDiaLogStore();
+  const { setKeepPrevDialogAttribute } = useDiaLogStore();
 
-  const onClickPost = async (postId) => {
-    await setDiaLogAttribute({
-      type: DialLogState.CONFIRM,
-      text: "정말로 페이지를 이동하겠습니까",
+  const onClickPost = (postId) => {
+    setKeepPrevDialogAttribute({
+      type: DialogConfig.CONFIRM,
+      text: "상세 페이지로 이동 하실?",
       isOpen: true,
-      onConfirm: async () => {
-        await setDiaLogAttribute({
-          text: "정말로 이동해버린다요!",
-          onConfirm: async () => {
-            window.location.href = `/post-detail/${postId}`;
-          },
-        });
-      },
-      onCancel: () => {
-        setDiaLogAttribute({ isOpen: false });
-      },
+      endPoint: `/post-detail/${postId}`,
     });
   };
 

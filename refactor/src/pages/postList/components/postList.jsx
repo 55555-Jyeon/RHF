@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import PaginationConfig from "../../../consts/pagenation.config";
+import { PaginationConfig } from "../../../consts/pagenation.config";
 import { getPostData } from "../../../apis/post";
 import PagenationBtn from "../../../components/pagenation/pagenation.button";
 import OnePost from "./onePost";
@@ -35,6 +35,7 @@ const PostList = () => {
         {postList.map((post) => (
           <OnePost
             key={post.id}
+            id={post.id}
             title={post.title}
             content={post.content}
             nickName={post.User.nickName}

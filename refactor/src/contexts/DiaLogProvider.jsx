@@ -1,13 +1,6 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import Dialog from "../components/Dialog";
-
-export const DialLogState = {
-  ALERT: "ALERT",
-  CONFIRM: "CONFIRM",
-};
-/*
-  상태가 아닌데 이름에 state가 들어감 이름 바꾸장
-*/
+import { DialogConfig } from "../consts/dialog.config";
 
 const DiaLogContext = createContext();
 
@@ -17,30 +10,21 @@ const DiaLogProvider = ({ children }) => {
   const diaLogRef = useRef();
 
   const [diaLogAttribute, setDiaLogAttribute] = useState({
-    type: DialLogState.ALERT,
+    type: DialogConfig.ALERT,
     text: "",
     isOpen: false,
-    onConfirm: () => {},
-    onCancel: () => {},
-    position: {
-      x: 50,
-      y: 10,
-    },
+    endPoint: "",
   });
 
-  useEffect(() => {
-    if (diaLogAttribute.isOpen) return diaLogRef.current.showModal();
-    // showModal() : <dialog>태그의 메서드. 모달 형태로 표시해줌.
-    diaLogRef.current.close();
-  }, [diaLogAttribute.isOpen]);
-
-  const setKeepPrevDialogAttribute = async (args) => {
+  // diaLogAttribute 상태 수정 함수
+  const setKeepPrevDialogAttribute = (args) => {
     setDiaLogAttribute((prev) => ({
       ...prev,
       ...args,
     }));
   };
 
+  // diaLog 컴포넌트 닫아주는 함수
   const onCloseDiaLog = () => {
     setDiaLogAttribute((prev) => ({
       ...prev,
@@ -50,19 +34,15 @@ const DiaLogProvider = ({ children }) => {
 
   return (
     <DiaLogContext.Provider
-      value={[diaLogAttribute, setKeepPrevDialogAttribute]}
+      value={{
+        diaLogAttribute,
+        setKeepPrevDialogAttribute,
+        onCloseDiaLog,
+      }}
     >
       {children}
-      <Dialog
-        {...{ ...diaLogAttribute }}
-        ref={diaLogRef}
-        onClose={onCloseDiaLog}
-      />
+      <Dialog {...{ ...diaLogAttribute }} ref={diaLogRef} />
     </DiaLogContext.Provider>
   );
 };
 export default DiaLogProvider;
-
-/*
-  context관련 로직과 dialog컴포넌트에 필요한 로직을 분리시키기.
-*/
